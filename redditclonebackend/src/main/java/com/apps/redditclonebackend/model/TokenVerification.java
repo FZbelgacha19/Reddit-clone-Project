@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Entity @Builder @Data @AllArgsConstructor @NoArgsConstructor
-public class VerificationToken {
+public class TokenVerification {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
