@@ -13,13 +13,15 @@ import lombok.NoArgsConstructor;
  * la classe VerificationToken est utilisée pour gérer les tokens de vérification de compte
  */
 
-@Entity @Data @Builder @AllArgsConstructor @NoArgsConstructor
+@Entity @Builder @Data @AllArgsConstructor @NoArgsConstructor
 public class VerificationToken {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
+    private Instant expiryDate;
+
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
-    private Instant expiryDate;
+
 }
