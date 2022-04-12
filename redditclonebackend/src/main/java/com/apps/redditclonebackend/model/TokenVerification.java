@@ -4,16 +4,16 @@ import java.time.Instant;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * la classe VerificationToken est utilisée pour gérer les tokens de vérification de compte
  */
 
-@Entity @Builder @Data @AllArgsConstructor @NoArgsConstructor
+@Entity @Builder
+@Getter
+@Setter
+@AllArgsConstructor @NoArgsConstructor
 public class TokenVerification {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
