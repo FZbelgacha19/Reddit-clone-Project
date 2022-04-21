@@ -1,13 +1,17 @@
 package com.apps.redditclonebackend.service;
+import com.apps.redditclonebackend.dto.AuthenticationResponse;
 import com.apps.redditclonebackend.dto.LoginRequest;
 import com.apps.redditclonebackend.dto.RegisterRequest;
 import com.apps.redditclonebackend.exception.SpringRedditException;
 import com.apps.redditclonebackend.model.*;
 import com.apps.redditclonebackend.repository.UserRepository;
 import com.apps.redditclonebackend.repository.TokenVerificationRepository;
+import com.apps.redditclonebackend.security.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,8 @@ public class AuthService {
     private final TokenVerificationRepository tokenVerificationRepository;
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+
 
     @Transactional
     public void signup(RegisterRequest regRequest){
@@ -47,7 +53,7 @@ public class AuthService {
     }
 
     private String generateVerificationToken(User user) {
-        String token = UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString(); // UUID est une classe de java qui génère des ID aléatoires
         TokenVerification vt = TokenVerification.builder()
                 .token(token)
                 .user(user)
@@ -74,7 +80,20 @@ public class AuthService {
         userRepository.save(u);
     }
 
-    public void login(LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    public AuthenticationResponse login(LoginRequest loginRequest) {
+        /*
+         UsernamePasswordAuthenticationToken() : c'est une classe de spring qui permet de créer un objet de type UsernamePasswordAuthenticationToken qui contient les informations de l'utilisateur qui se connecte (username, password) et qui est ensuite envoyé à l'authenticationManager
+         qui va vérifier si le couple username/password est correct et si oui, le token est créé et envoyé à l'utilisateur (ce token est utilisé pour se connecter à l'application)
+         */
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        /*
+        SecurityContextHolder : c'est une classe de spring qui permet de stocker le token dans le contexte de l'application
+        c'est quoi un contexte ?
+        Il s'agit d'un objet qui contient toutes les informations de l'utilisateur connecté (token, roles, etc...)
+         */
+        String token = jwtProvider.generateToken(authentication);
+        return new AuthenticationResponse(token, loginRequest.getUsername());
     }
+
 }
