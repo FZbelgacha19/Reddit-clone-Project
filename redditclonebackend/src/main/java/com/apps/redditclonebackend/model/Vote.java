@@ -16,7 +16,7 @@ import lombok.*;
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long VoteId;
+    private Long voteId;
     
     private VoteType voteType;
     @NotNull

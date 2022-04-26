@@ -25,7 +25,8 @@ public class MailService {
             messageHelper.setFrom("fdemo180@gmail.com");
             messageHelper.setTo(notificationEmail.getRecipient());
             messageHelper.setSubject(notificationEmail.getSubject());
-            messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()), true);
+//            messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()), true);
+            messageHelper.setText(notificationEmail.getBody());
         };
         try{
             mailSender.send(messagePreparator);
