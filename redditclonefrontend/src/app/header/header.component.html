@@ -1,0 +1,22 @@
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="assets/img/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+      <span class="reddit-text">
+          Spring Reddit Clone
+      </span>
+    </a>
+    <div class="d-inline-flex p-2">
+        <div class="col-4">
+          <select class="form-control" (change)="selectLanguage($event)">
+            <option value="en-US">EN</option>
+            <option value="fr-FR">FR</option>
+          </select>
+        </div>
+        <div class="col-10">
+          <a routerLink="/auth/login" class="btn btn-dark btn-sm m-1">{{"Login" | translate}}</a>
+          <a routerLink="/auth/sign-up" class="btn btn-primary btn-sm m-1">{{"signup" | translate}}</a>
+        </div>
+    </div>
+  </div>
+</nav>
