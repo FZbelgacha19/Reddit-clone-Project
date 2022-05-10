@@ -40,21 +40,27 @@ public class AuthService {
 
     @Transactional
     public void signup(RegisterRequest regRequest){
-        User user = User.builder()
-                .username(regRequest.getUsername())
-                .email(regRequest.getEmail())
-                .password(passwordEncoder.encode(regRequest.getPassword()))
-                .created(Instant.now())
-                .enabled(false)
-                .build();
-        userRepository.save(user);
+        // test if username already exists in database and throw an exception if it does
+        if(userRepository.findByUsername(regRequest.getUsername()).isPresent() || userRepository.findByEmail(regRequest.getEmail()).isPresent()){
+            throw new UserException("Username already exists");
+        }else{
+            User user = User.builder()
+                    .username(regRequest.getUsername())
+                    .email(regRequest.getEmail())
+                    .password(passwordEncoder.encode(regRequest.getPassword()))
+                    .created(Instant.now())
+                    .enabled(false)
+                    .build();
+            userRepository.save(user);
 
-        // the system will generate a token to enable sigin-in of the user in apps
+            // the system will generate a token to enable sigin-in of the user in apps
 
-        String token = generateVerificationToken(user);
-        mailService.sendMail(new NotificationEmail("Activer votre compte", user.getEmail(),
-                "Merci d'activer votre compte clique sur le lien ci-dessous\n"
-        +"http://localhost:8080/api/auth/accountVerification/"+token));
+            String token = generateVerificationToken(user);
+            mailService.sendMail(new NotificationEmail("Activer votre compte", user.getEmail(),
+                    "Merci d'activer votre compte clique sur le lien ci-dessous\n"
+                            +"<a href='http://localhost:8080/api/auth/accountVerification/"+token+"'>Activer votre compte</a>"));
+        }
+
     }
 
     private String generateVerificationToken(User user) {

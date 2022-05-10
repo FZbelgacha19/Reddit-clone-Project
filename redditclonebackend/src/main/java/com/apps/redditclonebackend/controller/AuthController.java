@@ -17,6 +17,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+//allow frontend request to be sent to this controller
+//@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final AuthService authService;
@@ -25,9 +27,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> singup(@RequestBody RegisterRequest regRequest){
-        System.out.println("hello");
-        authService.signup(regRequest);
-        return new ResponseEntity<>("user register successful",HttpStatus.OK);
+        try {
+            authService.signup(regRequest);
+            return new ResponseEntity<>("Inscription réussie",HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("accountVerification/{token}")

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
+import {NgxWebstorageModule} from "ngx-webstorage";
+import {ToastrModule} from "ngx-toastr";
 
 
 @NgModule({
@@ -10,12 +12,16 @@ import {ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     AuthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxWebstorageModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   exports: [
     CommonModule,
     AuthRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxWebstorageModule,
+    ToastrModule
   ]
 })
 export class AuthModule { }

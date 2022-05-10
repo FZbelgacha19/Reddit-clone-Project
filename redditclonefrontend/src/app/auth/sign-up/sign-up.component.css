@@ -2,7 +2,7 @@
   margin: 100px;
 }
 
-.sign-up {
+/*.sign-up {
   background-color: #0079D3;
   color: aliceblue;
   fill: #0079D3;
@@ -17,7 +17,7 @@
   text-transform: uppercase;
   padding: 3px 16px;
   opacity: 1;
-}
+}*/
 
 input.ng-invalid.ng-touched{
   border: 1px solid red;

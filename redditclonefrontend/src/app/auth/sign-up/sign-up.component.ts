@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SignupRequestPayload} from "./signup-request.payload";
 import {AuthService} from "../shared/auth.service";
+import {Router} from "@angular/router";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-sign-up',
@@ -11,8 +13,9 @@ import {AuthService} from "../shared/auth.service";
 export class SignUpComponent implements OnInit {
   signupRequestPayload!: SignupRequestPayload;
   signupForm!: FormGroup;
+  isSuccessful = true;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router,private toastr: ToastrService) {
     this.signupRequestPayload = {
       username: '',
       email: '',
@@ -41,10 +44,21 @@ export class SignUpComponent implements OnInit {
         password: this.signupForm.get('password').value
       };
       this.authService.signup(this.signupRequestPayload).subscribe(() => {
-        console.log('signup avec success');
+        this.isSuccessful = true;
+        this.router.navigateByUrl(
+          '/auth/login'
+        ).then(() => {
+          // toaste success message and let show for 2 seconds
+          this.toastr.success('Vous êtes inscrits avec succès, verifiez votre boite mail pour activer votre compte', 'Inscription réussie', {
+            timeOut: 6000
+          });
+
+        })
       },() => {
-        console.log('signup faild');
-      })
+        // log error message
+        this.isSuccessful = false;
+        this.toastr.error('Sign up failed!');
+      });
       }
     }
 

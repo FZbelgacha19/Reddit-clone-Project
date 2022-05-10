@@ -9,11 +9,10 @@
         <div class="card-body">
           <form [formGroup]="signupForm" (ngSubmit)="signup()">
             <div class="form-group row">
-              <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail
-                Address</label>
+              <label for="email_address" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
               <div class="col-md-6">
                 <input type="text" [formControlName]="'email'" id="email_address" class="form-control" name="email-address">
-                <span *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched" class="help-block">Please enter a valid email</span>
+                <span *ngIf="!signupForm.get('email')?.valid && signupForm.get('email')?.touched" class="help-block">Please enter a valid email</span>
               </div>
             </div>
 
@@ -21,7 +20,8 @@
               <label class="col-md-4 col-form-label text-md-right">User Name</label>
               <div class="col-md-6">
                 <input type="text" [formControlName]="'username'" class="form-control">
-                <span *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched" class="help-block">Please enter a valid username</span>
+                <span *ngIf="!signupForm.get('username')?.valid && signupForm.get('username')?.touched" class="help-block">Please enter a valid username</span>
+                <span *ngIf="!this.isSuccessful" class="help-block">Username already existe</span>
               </div>
             </div>
 
@@ -29,7 +29,7 @@
               <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
               <div class="col-md-6">
                 <input type="password" [formControlName]="'password'" id="password" class="form-control" name="password">
-                <span *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched" class="help-block">Please enter a valid password</span>
+                <span *ngIf="!signupForm.get('password')?.valid && signupForm.get('password')?.touched" class="help-block">Please enter a valid password</span>
               </div>
             </div>
 
