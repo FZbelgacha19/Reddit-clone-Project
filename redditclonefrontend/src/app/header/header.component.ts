@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {TranslateService} from "@ngx-translate/core";
+import {AuthService} from "../auth/shared/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -8,12 +11,24 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private translateService : TranslateService) { }
+  faUser = faUser;
+  isLoggedIn!: boolean;
+  username!: string;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private router: Router) { }
+
+  ngOnInit() {
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.username = this.authService.getUserName();
   }
 
-  public selectLanguage(event: any) {
-      this.translateService.use(event.target.value);
+  goToUserProfile() {
+    this.router.navigateByUrl('/auth/user-profile/' + this.username);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.router.navigateByUrl('');
   }
 }

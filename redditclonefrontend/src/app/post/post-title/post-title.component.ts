@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {PostModel} from "../post/post-Model";
 import { faComments, faArrowUp,faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import {PostService} from "../shared/post.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-post-title',
@@ -15,21 +17,21 @@ export class PostTitleComponent implements OnInit {
   faArrowDown= faArrowDown;
   upvoteColor: any;
   downvoteColor: any;
+  posts!: PostModel[];
 
-  constructor() { }
+  constructor(private postService: PostService, private router: Router) {
+    this.postService.getAllPosts().subscribe(post => {
+      this.posts = post;
+    });
+  }
 
   ngOnInit(): void {
+    this.posts = this.data;
   }
 
-  upvotePost() {
-
+  goToPost(id: number): void {
+    this.router.navigateByUrl('/post/view-post/' + id);
   }
 
-  downvotePost() {
 
-  }
-
-  goToPost(id: number) {
-    
-  }
 }
