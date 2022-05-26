@@ -17,7 +17,7 @@ export class PostTitleComponent implements OnInit {
   faArrowDown= faArrowDown;
   upvoteColor: any;
   downvoteColor: any;
-  posts!: PostModel[];
+  @Input() posts!: PostModel[];
 
   constructor(private postService: PostService, private router: Router) {
     this.postService.getAllPosts().subscribe(post => {
